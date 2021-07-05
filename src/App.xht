@@ -5,6 +5,8 @@ const canvas = document.createElement('canvas');
 let output = '', avatar = '', avatarFileName = '';
 
 const drawCanvas = (picture) => {
+    if(!avatar) return
+
     const image = new Image();
 
     image.addEventListener('load', () => {
@@ -55,19 +57,6 @@ const onAvatarUpload = async (event) => {
     drawCanvas('data:image/svg+xml,' + flags[1])
 };
 
-const onDropAvatar = async (event) => {
-    const file = [...event.dataTransfer.files][0];
-
-    const reader = new FileReader();
-
-    reader.addEventListener('load', (e) => {
-        avatar = e.target.result;
-        drawCanvas('data:image/svg+xml,' + flags[1])
-    })
-
-    reader.readAsDataURL(file);
-}
-
 const onPictureUpload = async (event) => drawCanvas(await readFile(event));
 
 </script>
@@ -77,13 +66,10 @@ const onPictureUpload = async (event) => drawCanvas(await readFile(event));
         id="avatar-select"
         class="w-px h-px opacity-0 select-none"
         type="file" 
-        accept="image/png, image/jpeg, image/svg+xml" 
-        @change:onAvatarUpload 
-        @dragenter|preventDefault|stopPropagation={() => {}} 
-        @dragover|preventDefault|stopPropagation={() => {}}
-        @drop|preventDefault|stopPropagation={onDropAvatar}
+        accept="image/png, image/jpeg, image/svg+xml, image/webp" 
+        @change:onAvatarUpload
     />
-    <label for="avatar-select" class="file-select w-48 flex flex-col items-center px-4 py-6 bg-white rounded-md shadow-md tracking-wide uppercase border border-gray-200 cursor-pointer hover:bg-light-200 text-dark-100 hover:text-dark-200 ease-linear transition-all duration-50 my-5 mx-4">
+    <label for="avatar-select" class="file-select w-56 flex flex-col items-center px-4 py-6 bg-white rounded-md shadow-md tracking-wide uppercase border border-gray-200 cursor-pointer hover:bg-light-200 text-dark-100 hover:text-dark-200 ease-linear transition-all duration-50 my-5 mx-4">
         <svg width="24" height="24" fill="none" viewBox="0 0 24 24">
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.75 14.75V16.25C4.75 17.9069 6.09315 19.25 7.75 19.25H16.25C17.9069 19.25 19.25 17.9069 19.25 16.25V14.75"></path>
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 14.25L12 5"></path>
@@ -104,7 +90,7 @@ const onPictureUpload = async (event) => drawCanvas(await readFile(event));
                     id="flag-select"
                     class="w-px h-px opacity-0 select-none"
                     type="file" 
-                    accept="image/png, image/jpeg, image/svg+xml" 
+                    accept="image/png, image/jpeg, image/svg+xml, image/webp" 
                     @change:onPictureUpload
                 />
                 <label for="flag-select" class="file-select text-center w-36 flex flex-col h-24 items-center justify-center bg-white rounded-md shadow-md tracking-wide uppercase border border-gray-200 cursor-pointer hover:bg-light-200 text-dark-100 hover:text-dark-200 ease-linear transition-all duration-50">
@@ -117,7 +103,7 @@ const onPictureUpload = async (event) => drawCanvas(await readFile(event));
 
 <div class="flex flex-col items-center justify-center w-2/3 md:w-96 mt-16 lg:mt-0 pb-16 lg:pb-0">
     {#if output}
-        <img src={output} alt="" tabindex="-1">
+        <img src={output} alt="">
         <a class="text-gray-200 bg-gray-900 hover:bg-gray-800 ml-3 outline-none px-4 py-2 rounded-md shadow font-medium leading-snug my-3" href={output} download="{avatarFileName}-{Date.now().toString(36).slice(1)}.png">
             Download
         </a>

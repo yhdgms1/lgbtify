@@ -2,6 +2,7 @@
   "version": "1.0.0",
   "name": "lgbtify",
   "description": "LGBTify your profile picture",
+  "license": "MIT",
   "scripts": {
     "dev": "MODE=dev vite",
     "build": "vite build",

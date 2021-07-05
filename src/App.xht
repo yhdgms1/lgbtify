@@ -1,6 +1,8 @@
 <script>
+import { flags } from './lib/flags'
+
 const canvas = document.createElement('canvas');
-let output, avatar;
+let output = '', avatar = '', avatarFileName = '';
 
 const drawCanvas = (picture) => {
     const image = new Image();
@@ -11,6 +13,8 @@ const drawCanvas = (picture) => {
         canvas.height = image.height;
 
         const ctx = canvas.getContext("2d");
+
+        if(!ctx) return
 
         ctx.clearRect(0, 0, canvas.width, canvas.height)
         ctx.drawImage(image, 0, 0);
@@ -24,19 +28,19 @@ const drawCanvas = (picture) => {
         })
 
         flag.src = picture;
-        // flag.src = 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iODAwIiBoZWlnaHQ9IjQ4MCIgdmlld0JveD0iMCAwIDgwMCA0ODAiPgogIDxnIGZpbGwtcnVsZT0iZXZlbm9kZCI+CiAgICA8cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjE5MiIgZmlsbD0iI2Q2MDI3MCIvPgogICAgPHJlY3Qgd2lkdGg9IjgwMCIgaGVpZ2h0PSI5NiIgeT0iMTkyIiBmaWxsPSIjOWI0Zjk2Ii8+CiAgICA8cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjE5MiIgeT0iMjg4IiBmaWxsPSIjMDAzOGE4Ii8+CiAgPC9nPgo8L3N2Zz4='
-        // flag.src = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3NzcgNDgwIj4KCTxyZWN0IGZpbGw9IiM3NTA3ODciIHdpZHRoPSI3NzciIGhlaWdodD0iNDgwIi8+Cgk8cmVjdCBmaWxsPSIjMDA0ZGZmIiB3aWR0aD0iNzc3IiBoZWlnaHQ9IjQwMCIvPgoJPHJlY3QgZmlsbD0iIzAwODAyNiIgd2lkdGg9Ijc3NyIgaGVpZ2h0PSIzMjAiLz4KCTxyZWN0IGZpbGw9IiNmZmVkMDAiIHdpZHRoPSI3NzciIGhlaWdodD0iMjQwIi8+Cgk8cmVjdCBmaWxsPSIjZmY4YzAwIiB3aWR0aD0iNzc3IiBoZWlnaHQ9IjE2MCIvPgoJPHJlY3QgZmlsbD0iI2U0MDMwMyIgd2lkdGg9Ijc3NyIgaGVpZ2h0PSI4MCIvPgo8L3N2Zz4='
-        
+ 
     }, false);
 
     image.src = avatar;
 }
 
-const readFile = e => new Promise(resolve => {
+const readFile = (e, setAvatar) => new Promise(resolve => {
     const file = e.target.files[0]
 
     if (!file) return;
 
+    if(setAvatar) avatarFileName = file.name.split('.').slice(0, -1).join('')
+    
     const reader = new FileReader();
 
     reader.addEventListener('load', (e) => {
@@ -46,12 +50,76 @@ const readFile = e => new Promise(resolve => {
     reader.readAsDataURL(file);
 });
 
-const changeHandler = async (event) => {
-    avatar = await readFile(event);
-    drawCanvas('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3NzcgNDgwIj4KCTxyZWN0IGZpbGw9IiM3NTA3ODciIHdpZHRoPSI3NzciIGhlaWdodD0iNDgwIi8+Cgk8cmVjdCBmaWxsPSIjMDA0ZGZmIiB3aWR0aD0iNzc3IiBoZWlnaHQ9IjQwMCIvPgoJPHJlY3QgZmlsbD0iIzAwODAyNiIgd2lkdGg9Ijc3NyIgaGVpZ2h0PSIzMjAiLz4KCTxyZWN0IGZpbGw9IiNmZmVkMDAiIHdpZHRoPSI3NzciIGhlaWdodD0iMjQwIi8+Cgk8cmVjdCBmaWxsPSIjZmY4YzAwIiB3aWR0aD0iNzc3IiBoZWlnaHQ9IjE2MCIvPgoJPHJlY3QgZmlsbD0iI2U0MDMwMyIgd2lkdGg9Ijc3NyIgaGVpZ2h0PSI4MCIvPgo8L3N2Zz4=')
+const onAvatarUpload = async (event) => {
+    avatar = await readFile(event, true);
+    drawCanvas('data:image/svg+xml,' + flags[1])
 };
+
+const onDropAvatar = async (event) => {
+    const file = [...event.dataTransfer.files][0];
+
+    const reader = new FileReader();
+
+    reader.addEventListener('load', (e) => {
+        avatar = e.target.result;
+        drawCanvas('data:image/svg+xml,' + flags[1])
+    })
+
+    reader.readAsDataURL(file);
+}
+
+const onPictureUpload = async (event) => drawCanvas(await readFile(event));
 
 </script>
 
-<input type="file" accept="image/png, image/jpeg" @change:changeHandler />
-<img src={output} alt="">
+<div class="flex flex-col items-center justify-center">
+    <input
+        id="avatar-select"
+        class="w-px h-px opacity-0 select-none"
+        type="file" 
+        accept="image/png, image/jpeg, image/svg+xml" 
+        @change:onAvatarUpload 
+        @dragenter|preventDefault|stopPropagation={() => {}} 
+        @dragover|preventDefault|stopPropagation={() => {}}
+        @drop|preventDefault|stopPropagation={onDropAvatar}
+    />
+    <label for="avatar-select" class="file-select w-48 flex flex-col items-center px-4 py-6 bg-white rounded-md shadow-md tracking-wide uppercase border border-gray-200 cursor-pointer hover:bg-light-200 text-dark-100 hover:text-dark-200 ease-linear transition-all duration-50 my-5 mx-4">
+        <svg width="24" height="24" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.75 14.75V16.25C4.75 17.9069 6.09315 19.25 7.75 19.25H16.25C17.9069 19.25 19.25 17.9069 19.25 16.25V14.75"></path>
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 14.25L12 5"></path>
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8.75 8.25L12 4.75L15.25 8.25"></path>
+        </svg>
+        <span class="mt-2 text-base leading-normal">Select a file</span>
+    </label>
+    <p class="px-2 py-4 text-lg">Select a flag:</p>
+    <div class="grid gap-2 grid-cols-2 md:flex md:flex-row items-center justify-between">
+        {#each flags as flag}
+            <button class="h-24 max-w-36 flag-select" @click={drawCanvas('data:image/svg+xml,' + flag)}>
+                <img class="h-24 max-w-36 object-cover" src="data:image/svg+xml,{flag}" alt="flag">
+            </button>
+        {/each}
+        {#if avatar}
+            <div class="w-36 h-24 flex flex-row-reverse">
+                <input
+                    id="flag-select"
+                    class="w-px h-px opacity-0 select-none"
+                    type="file" 
+                    accept="image/png, image/jpeg, image/svg+xml" 
+                    @change:onPictureUpload
+                />
+                <label for="flag-select" class="file-select text-center w-36 flex flex-col h-24 items-center justify-center bg-white rounded-md shadow-md tracking-wide uppercase border border-gray-200 cursor-pointer hover:bg-light-200 text-dark-100 hover:text-dark-200 ease-linear transition-all duration-50">
+                    <span class="mt-2 text-base leading-normal">Or from gallery</span>
+                </label>
+            </div>
+        {/if}
+    </div>
+</div>
+
+<div class="flex flex-col items-center justify-center w-2/3 md:w-96 mt-16 lg:mt-0 pb-16 lg:pb-0">
+    {#if output}
+        <img src={output} alt="" tabindex="-1">
+        <a class="text-gray-200 bg-gray-900 hover:bg-gray-800 ml-3 outline-none px-4 py-2 rounded-md shadow font-medium leading-snug my-3" href={output} download="{avatarFileName}-{Date.now().toString(36).slice(1)}.png">
+            Download
+        </a>
+    {/if}
+</div>

@@ -1,0 +1,7 @@
+input:focus ~ .file-select{
+    box-shadow: 0 0 0 2px #000;
+}
+
+.flag-select:focus{
+    box-shadow: 0 0 0 2px #000;
+}

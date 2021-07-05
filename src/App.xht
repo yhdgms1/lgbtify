@@ -80,7 +80,7 @@ const onPictureUpload = async (event) => drawCanvas(await readFile(event));
     <p class="px-2 py-4 text-lg">Select a flag:</p>
     <div class="grid gap-2 grid-cols-2 md:flex md:flex-row items-center justify-between">
         {#each flags as flag}
-            <button class="h-24 max-w-36 flag-select" @click={drawCanvas('data:image/svg+xml,' + flag)}>
+            <button class="h-24 max-w-36 flag-select outline-none" @click={drawCanvas('data:image/svg+xml,' + flag)}>
                 <img class="h-24 max-w-36 object-cover" src="data:image/svg+xml,{flag}" alt="flag">
             </button>
         {/each}
@@ -94,7 +94,7 @@ const onPictureUpload = async (event) => drawCanvas(await readFile(event));
                     @change:onPictureUpload
                 />
                 <label for="flag-select" class="file-select text-center w-36 flex flex-col h-24 items-center justify-center bg-white rounded-md shadow-md tracking-wide uppercase border border-gray-200 cursor-pointer hover:bg-light-200 text-dark-100 hover:text-dark-200 ease-linear transition-all duration-50">
-                    <span class="mt-2 text-base leading-normal">Or from gallery</span>
+                    <span class="mt-2 text-base leading-normal">From gallery</span>
                 </label>
             </div>
         {/if}

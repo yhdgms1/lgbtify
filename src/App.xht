@@ -26,7 +26,10 @@ const drawCanvas = (picture) => {
         flag.addEventListener('load', () => {
             ctx.globalAlpha = 0.6;
             ctx.drawImage(flag, 0, 0, image.width, image.height);
-            output = canvas.toDataURL("image/png", 1.0)
+
+            if(output) URL.revokeObjectURL(output)
+
+            canvas.toBlob(blob => output = URL.createObjectURL(blob), 'image/png', 1.0);
         })
 
         flag.src = picture;
@@ -78,7 +81,7 @@ const onPictureUpload = async (event) => drawCanvas(await readFile(event));
         <span class="mt-2 text-base leading-normal">Select a file</span>
     </label>
     <p class="text-lg py-4 px-2">Select a flag:</p>
-    <div class="grid gap-2 grid-cols-2 md:flex md:flex-row items-center justify-between">
+    <div class="grid gap-2 grid-cols-2 xl:flex xl:flex-row items-center justify-between">
         {#each flags as flag}
             <button class="outline-none h-24 max-w-36 flag-select filter hover:brightness-95 focus:brightness-90" @click={drawCanvas('data:image/svg+xml,' + flag)}>
                 <img class="object-cover h-24 max-w-36" src="data:image/svg+xml,{flag}" alt="flag">

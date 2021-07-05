@@ -12,10 +12,10 @@
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="theme-color" content="#ffffff">
   </head>
-  <body class="font-sans antialiased bg-white text-gray-900 tracking-tight flex flex-col min-h-screen">
-    <header class="w-full md:bg-opacity-90 transition duration-300 ease-in-out false">
-      <div class="max-w-6xl mx-auto px-5 sm:px-6">
-        <div class="flex items-center justify-between h-16 md:h-20">
+  <body class="bg-white flex flex-col font-sans min-h-screen tracking-tight text-gray-900 antialiased">
+    <header class="w-full transition ease-in-out duration-300 false md:bg-opacity-90">
+      <div class="mx-auto max-w-6xl px-5 sm:px-6">
+        <div class="flex h-16 items-center justify-between md:h-20">
           <div class="flex-shrink-0 mr-4">
             <a class="flex justify-between items-center" href="/">
               <svg width="36" height="36" viewBox="0 0 128 128">
@@ -38,13 +38,13 @@
               </span>
             </a>
           </div>
-          <a class="text-gray-200 bg-gray-900 hover:bg-gray-800 ml-3 px-4 py-2 rounded-md shadow font-medium leading-snug" rel="noopener noreferrer" href="https://github.com/Artemis69/lgbtify" target="_blank">
+          <a class="rounded-md font-medium bg-gray-900 shadow leading-snug ml-3 py-2 px-4 text-gray-200 hover:bg-gray-800" rel="noopener noreferrer" href="https://github.com/Artemis69/lgbtify" target="_blank">
             GitHub
           </a>
         </div>
       </div>
     </header>
-    <div class="h-full w-full flex flex-col lg:flex-row items-center justify-center md:justify-around flex-grow" id="app"></div>
+    <div class="flex flex-col flex-grow h-full w-full lg:flex-row items-center justify-center md:justify-around" id="app"></div>
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>

@@ -64,12 +64,12 @@ const onPictureUpload = async (event) => drawCanvas(await readFile(event));
 <div class="flex flex-col items-center justify-center">
     <input
         id="avatar-select"
-        class="w-px h-px opacity-0 select-none"
+        class="h-px w-px opacity-0 select-none"
         type="file" 
         accept="image/png, image/jpeg, image/svg+xml, image/webp" 
         @change:onAvatarUpload
     />
-    <label for="avatar-select" class="file-select w-56 flex flex-col items-center px-4 py-6 bg-white rounded-md shadow-md tracking-wide uppercase border border-gray-200 cursor-pointer hover:bg-light-200 text-dark-100 hover:text-dark-200 ease-linear transition-all duration-50 my-5 mx-4">
+    <label for="avatar-select" class="bg-white border rounded-md cursor-pointer flex flex-col border-gray-200 shadow-md my-5 mx-4 tracking-wide py-6 px-4 transition-all ease-linear text-dark-100 w-56 duration-50 file-select items-center uppercase hover:bg-light-200 hover:text-dark-200">
         <svg width="24" height="24" fill="none" viewBox="0 0 24 24">
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.75 14.75V16.25C4.75 17.9069 6.09315 19.25 7.75 19.25H16.25C17.9069 19.25 19.25 17.9069 19.25 16.25V14.75"></path>
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 14.25L12 5"></path>
@@ -77,23 +77,23 @@ const onPictureUpload = async (event) => drawCanvas(await readFile(event));
         </svg>
         <span class="mt-2 text-base leading-normal">Select a file</span>
     </label>
-    <p class="px-2 py-4 text-lg">Select a flag:</p>
+    <p class="text-lg py-4 px-2">Select a flag:</p>
     <div class="grid gap-2 grid-cols-2 md:flex md:flex-row items-center justify-between">
         {#each flags as flag}
-            <button class="h-24 max-w-36 flag-select outline-none filter hover:brightness-95 focus:brightness-90" @click={drawCanvas('data:image/svg+xml,' + flag)}>
-                <img class="h-24 max-w-36 object-cover" src="data:image/svg+xml,{flag}" alt="flag">
+            <button class="outline-none h-24 max-w-36 flag-select filter hover:brightness-95 focus:brightness-90" @click={drawCanvas('data:image/svg+xml,' + flag)}>
+                <img class="object-cover h-24 max-w-36" src="data:image/svg+xml,{flag}" alt="flag">
             </button>
         {/each}
         {#if avatar}
-            <div class="w-36 h-24 flex flex-row-reverse">
+            <div class="flex flex-row-reverse h-24 w-36">
                 <input
                     id="flag-select"
-                    class="w-px h-px opacity-0 select-none"
+                    class="h-px w-px opacity-0 select-none"
                     type="file" 
                     accept="image/png, image/jpeg, image/svg+xml, image/webp" 
                     @change:onPictureUpload
                 />
-                <label for="flag-select" class="file-select text-center w-36 flex flex-col h-24 items-center justify-center bg-white rounded-md shadow-md tracking-wide uppercase border border-gray-200 cursor-pointer hover:bg-light-200 text-dark-100 hover:text-dark-200 ease-linear transition-all duration-50">
+                <label for="flag-select" class="bg-white border rounded-md cursor-pointer flex flex-col border-gray-200 h-24 shadow-md text-center tracking-wide transition-all ease-linear text-dark-100 w-36 duration-50 file-select items-center justify-center uppercase hover:bg-light-200 hover:text-dark-200">
                     <span class="mt-2 text-base leading-normal">From gallery</span>
                 </label>
             </div>
@@ -101,10 +101,10 @@ const onPictureUpload = async (event) => drawCanvas(await readFile(event));
     </div>
 </div>
 
-<div class="flex flex-col items-center justify-center w-2/3 md:w-96 mt-16 lg:mt-0 pb-16 lg:pb-0">
+<div class="flex flex-col mt-16 pb-16 w-2/3 items-center justify-center md:w-96 lg:mt-0 lg:pb-0">
     {#if output}
         <img src={output} alt="">
-        <a class="text-gray-200 bg-gray-900 hover:bg-gray-800 ml-3 px-4 py-2 rounded-md shadow font-medium leading-snug my-3" href={output} download="{avatarFileName}-{Date.now().toString(36).slice(1)}.png">
+        <a class="rounded-md font-medium bg-gray-900 shadow my-3 leading-snug ml-3 py-2 px-4 text-gray-200 hover:bg-gray-800" href={output} download="{avatarFileName}-{Date.now().toString(36).slice(1)}.png">
             Download
         </a>
     {/if}

@@ -7,7 +7,7 @@ let output = '', avatar = '', avatarFileName = '';
 const drawCanvas = (picture) => {
     if(!avatar) return
 
-    const image = new Image();
+    const image = document.createElement('img');
 
     image.addEventListener('load', () => {
 
@@ -21,7 +21,7 @@ const drawCanvas = (picture) => {
         ctx.clearRect(0, 0, canvas.width, canvas.height)
         ctx.drawImage(image, 0, 0);
 
-        const flag = new Image()
+        const flag = document.createElement('img')
 
         flag.addEventListener('load', () => {
             ctx.globalAlpha = 0.6;
@@ -48,9 +48,7 @@ const readFile = (e, setAvatar) => new Promise(resolve => {
     
     const reader = new FileReader();
 
-    reader.addEventListener('load', (e) => {
-        resolve(e.target.result)
-    })
+    reader.addEventListener('load', e => resolve(e.target.result))
 
     reader.readAsDataURL(file);
 });
@@ -71,8 +69,10 @@ const onPictureUpload = async (event) => drawCanvas(await readFile(event));
         type="file" 
         accept="image/png, image/jpeg, image/svg+xml, image/webp" 
         @change:onAvatarUpload
+        @focus={e => e.target.nextSibling.nextSibling.classList.add('outline-solid-gray-900', 'dark:outline-solid-light-100')}
+        @blur={e => e.target.nextSibling.nextSibling.classList.remove('outline-solid-gray-900', 'dark:outline-solid-light-100')}
     />
-    <label for="avatar-select" class="bg-white border rounded-md cursor-pointer flex flex-col border-gray-200 shadow-md my-5 mx-4 tracking-wide py-6 px-4 transition-all ease-linear text-dark-100 w-56 duration-50 file-select items-center uppercase hover:bg-light-200 hover:text-dark-200">
+    <label for="avatar-select" class="bg-white border rounded cursor-pointer flex flex-col border-gray-200 shadow my-5 mx-4 tracking-wide py-6 px-4 text-dark-100 w-56 items-center uppercase dark:bg-dark-200 dark:border-dark-50 dark:text-light-100 hover:bg-light-200 hover:text-dark-200 dark:hover:bg-dark-300 dark:hover:text-light-200">
         <svg width="24" height="24" fill="none" viewBox="0 0 24 24">
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.75 14.75V16.25C4.75 17.9069 6.09315 19.25 7.75 19.25H16.25C17.9069 19.25 19.25 17.9069 19.25 16.25V14.75"></path>
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 14.25L12 5"></path>
@@ -83,8 +83,8 @@ const onPictureUpload = async (event) => drawCanvas(await readFile(event));
     <p class="text-lg py-4 px-2">Select a flag:</p>
     <div class="grid gap-2 grid-cols-2 xl:flex xl:flex-row items-center justify-between">
         {#each flags as flag}
-            <button class="outline-none h-24 max-w-36 flag-select filter hover:brightness-95 focus:brightness-90" @click={drawCanvas('data:image/svg+xml,' + flag)}>
-                <img class="object-cover h-24 max-w-36" src="data:image/svg+xml,{flag}" alt="flag">
+            <button class="rounded h-24 shadow max-w-36 filter focus:outline-solid-gray-900 dark:focus:outline-solid-light-100 hover:brightness-95 focus:brightness-90" @click={drawCanvas('data:image/svg+xml,' + flag)}>
+                <img class="rounded object-cover h-24 max-w-36" src="data:image/svg+xml,{flag}" alt="flag">
             </button>
         {/each}
         {#if avatar}
@@ -95,8 +95,10 @@ const onPictureUpload = async (event) => drawCanvas(await readFile(event));
                     type="file" 
                     accept="image/png, image/jpeg, image/svg+xml, image/webp" 
                     @change:onPictureUpload
+                    @focus={e => e.target.nextSibling.nextSibling.classList.add('outline-solid-gray-900', 'dark:outline-solid-light-100')}
+                    @blur={e => e.target.nextSibling.nextSibling.classList.remove('outline-solid-gray-900', 'dark:outline-solid-light-100')}
                 />
-                <label for="flag-select" class="bg-white border rounded-md cursor-pointer flex flex-col border-gray-200 h-24 shadow-md text-center tracking-wide transition-all ease-linear text-dark-100 w-36 duration-50 file-select items-center justify-center uppercase hover:bg-light-200 hover:text-dark-200">
+                <label for="flag-select" class="bg-white border rounded cursor-pointer flex flex-col border-gray-200 h-24 shadow text-center tracking-widetext-dark-100 w-36 items-center justify-center uppercase dark:bg-dark-200 dark:border-dark-50 dark:text-light-100 hover:bg-light-200 dark:hover:bg-dark-300 hover:text-dark-200 dark:hover:text-light-200">
                     <span class="text-base leading-normal">From gallery</span>
                 </label>
             </div>
@@ -107,8 +109,6 @@ const onPictureUpload = async (event) => drawCanvas(await readFile(event));
 <div class="flex flex-col mt-16 pb-16 w-2/3 items-center justify-center md:w-96 lg:mt-0 lg:pb-0">
     {#if output}
         <img src={output} alt="">
-        <a class="rounded-md font-medium bg-gray-900 shadow my-3 leading-snug ml-3 py-2 px-4 text-gray-200 hover:bg-gray-800" href={output} download="{avatarFileName}-{Date.now().toString(36).slice(1)}.png">
-            Download
-        </a>
+        <a class="rounded-md font-medium bg-gray-900 shadow my-3 leading-snug py-2 px-4 text-gray-200 dark:focus:outline-solid-light-100 dark:bg-dark-100 hover:bg-gray-800 dark:hover:bg-dark-50" href={output} download="{avatarFileName}-{Date.now().toString(36).slice(1)}.png">Download</a>
     {/if}
 </div>

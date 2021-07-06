@@ -98,7 +98,7 @@ const onPictureUpload = async (event) => drawCanvas(await readFile(event));
                     @focus={e => e.target.nextSibling.nextSibling.classList.add('outline-solid-gray-900', 'dark:outline-solid-light-100')}
                     @blur={e => e.target.nextSibling.nextSibling.classList.remove('outline-solid-gray-900', 'dark:outline-solid-light-100')}
                 />
-                <label for="flag-select" class="bg-white border rounded cursor-pointer flex flex-col border-gray-200 h-24 shadow text-center tracking-widetext-dark-100 w-36 items-center justify-center uppercase dark:bg-dark-200 dark:border-dark-50 dark:text-light-100 hover:bg-light-200 dark:hover:bg-dark-300 hover:text-dark-200 dark:hover:text-light-200">
+                <label for="flag-select" class="bg-white border rounded cursor-pointer flex flex-col border-gray-200 h-24 shadow text-center tracking-wide text-dark-100 w-36 items-center justify-center uppercase dark:bg-dark-200 dark:border-dark-50 dark:text-light-100 hover:bg-light-200 dark:hover:bg-dark-300 hover:text-dark-200 dark:hover:text-light-200">
                     <span class="text-base leading-normal">From gallery</span>
                 </label>
             </div>
@@ -109,6 +109,6 @@ const onPictureUpload = async (event) => drawCanvas(await readFile(event));
 <div class="flex flex-col mt-16 pb-16 w-2/3 items-center justify-center md:w-96 lg:mt-0 lg:pb-0">
     {#if output}
         <img src={output} alt="">
-        <a class="rounded-md font-medium bg-gray-900 shadow my-3 leading-snug py-2 px-4 text-gray-200 dark:focus:outline-solid-light-100 dark:bg-dark-100 hover:bg-gray-800 dark:hover:bg-dark-50" href={output} download="{avatarFileName}-{Date.now().toString(36).slice(1)}.png">Download</a>
+        <a class="rounded-md font-medium bg-gray-900 shadow my-3 leading-snug py-2 px-4 text-gray-200 dark:focus:outline-solid-light-100 dark:bg-dark-100 hover:bg-gray-800 dark:hover:bg-dark-50" href={output} download="{avatarFileName}-{output.split('/')[3] || ''}.png">Download</a>
     {/if}
 </div>

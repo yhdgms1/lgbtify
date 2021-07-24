@@ -25,7 +25,9 @@ const onAvatarUpload = async (event) => {
 
     if(output !== '') URL.revokeObjectURL(output)
 
-    output = await drawCanvas(canvas, avatar, 'data:image/svg+xml,' + flags[1], opacity)
+    flag = 'data:image/svg+xml,' + flags[1]
+
+    output = await drawCanvas(canvas, avatar, flag, opacity)
 };
 
 const onFlagUpload = async (event) => {

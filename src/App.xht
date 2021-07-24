@@ -1,64 +1,58 @@
 <script>
-import { flags } from './lib/flags'
+import { drawCanvas } from './lib/createImage'
+import { flags, flagAlts } from './lib/flags'
 
 const canvas = document.createElement('canvas');
-let output = '', avatar = '', avatarFileName = '';
 
-const drawCanvas = (picture) => {
-    if(!avatar) return
+let output = '', avatar = '', flag = '', avatarFileName = '', opacity = 153;
 
-    const image = document.createElement('img');
-
-    image.addEventListener('load', () => {
-
-        canvas.width = image.width;
-        canvas.height = image.height;
-
-        const ctx = canvas.getContext("2d");
-
-        if(!ctx) return
-
-        ctx.clearRect(0, 0, canvas.width, canvas.height)
-        ctx.drawImage(image, 0, 0);
-
-        const flag = document.createElement('img')
-
-        flag.addEventListener('load', () => {
-            ctx.globalAlpha = 0.6;
-            ctx.drawImage(flag, 0, 0, image.width, image.height);
-
-            if(output) URL.revokeObjectURL(output)
-
-            canvas.toBlob(blob => output = URL.createObjectURL(blob), 'image/png', 1.0);
-        })
-
-        flag.src = picture;
- 
-    }, false);
-
-    image.src = avatar;
-}
-
-const readFile = (e, setAvatar) => new Promise(resolve => {
+const readFile = (e, setAvatarFileName) => new Promise(resolve => {
     const file = e.target.files[0]
 
     if (!file) return;
 
-    if(setAvatar) avatarFileName = file.name.split('.').slice(0, -1).join('')
+    if(setAvatarFileName) avatarFileName = file.name.split('.').slice(0, -1).join('')
     
     const reader = new FileReader();
 
     reader.addEventListener('load', e => resolve(e.target.result))
 
-    reader.readAsDataURL(file);
+    return reader.readAsDataURL(file);
 });
 
 const onAvatarUpload = async (event) => {
-    avatar = await readFile(event, true);
-    drawCanvas('data:image/svg+xml,' + flags[1])
+    avatar = await readFile(event, true)
+
+    if(output !== '') URL.revokeObjectURL(output)
+
+    output = await drawCanvas(canvas, avatar, 'data:image/svg+xml,' + flags[1], opacity)
 };
 
-const onPictureUpload = async (event) => drawCanvas(await readFile(event));
+const onFlagUpload = async (event) => {
+    flag = await readFile(event)
+
+    if(output !== '') URL.revokeObjectURL(output)
+
+    output = await drawCanvas(canvas, avatar, flag, opacity)
+}
+
+const onFlagChange = async (newFlag) => {
+    if(avatar === '') return
+
+    flag = 'data:image/svg+xml,' + newFlag
+
+    if(output !== '') URL.revokeObjectURL(output)
+
+    output = await drawCanvas(canvas, avatar, flag, opacity)
+}
+
+const draw = async () => {
+    if(avatar === '' || flag === '') return
+
+    if(output !== '') URL.revokeObjectURL(output)
+
+    output = await drawCanvas(canvas, avatar, flag, opacity)
+};
 
 </script>
 
@@ -79,10 +73,13 @@ const onPictureUpload = async (event) => drawCanvas(await readFile(event));
         />
     </label>
     <p class="text-lg py-4 px-2">Select a flag:</p>
-    <div class="grid gap-2 grid-cols-2 xl:flex xl:flex-row items-center justify-between">
-        {#each flags as flag}
-            <button class="rounded h-24 shadow max-w-36 filter focus:outline-solid-gray-900 dark:focus:outline-solid-light-100 hover:brightness-95 focus:brightness-90" @click={drawCanvas('data:image/svg+xml,' + flag)}>
-                <img class="rounded object-cover h-24 max-w-36" src="data:image/svg+xml,{flag}" alt="flag">
+    <div class="grid gap-2 grid-cols-2 xl:grid-cols-6 xl:grid-rows-1">
+        {#each flags as flag, i}
+            <button 
+                class="rounded h-24 shadow max-w-36 filter focus:outline-solid-gray-900 dark:focus:outline-solid-light-100 hover:brightness-95 focus:brightness-90" 
+                @click={async () => await onFlagChange(flag)}
+            >
+                <img class="rounded object-cover h-24 max-w-36" src="data:image/svg+xml,{flag}" alt="{flagAlts[i]} flag">
             </button>
         {/each}
         {#if avatar}
@@ -93,10 +90,17 @@ const onPictureUpload = async (event) => drawCanvas(await readFile(event));
                     class="h-px w-px opacity-0 select-none"
                     type="file"
                     accept="image/png, image/jpeg, image/svg+xml, image/webp"
-                    @change:onPictureUpload
+                    @change:onFlagUpload
                 />
              </label>
         {/if}
+    </div>
+    <div class="flex flex-col items-center justify-center my-5 w-full lg:w-2/3">
+        <label class="flex flex-col items-center justify-center w-full">
+            <span>Flag opacity: {(opacity / 255).toFixed(2)}</span>
+            <input class="w-full" type="range" name="opacity" :value:opacity min="1" max="255">
+        </label>
+        <button @click:draw class="rounded-md font-medium bg-gray-900 shadow my-3 leading-snug py-2 px-4 text-gray-200 dark:focus:outline-solid-light-100 dark:bg-dark-100 hover:bg-gray-800 dark:hover:bg-dark-50">Apply</button>
     </div>
 </div>
 

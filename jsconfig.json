@@ -13,5 +13,5 @@
     "baseUrl": ".",
     "checkJs": true
   },
-  "include": ["src/**/*.d.ts", "src/**/*.js", "src/**/*.ma", "src/**/*.xht", "src/main.js"]
+  "include": ["src/**/*.d.ts", "src/**/*.js", "src/**/*.ma", "src/**/*.xht", "src/main.js", "src/lib/flags.ts"]
 }

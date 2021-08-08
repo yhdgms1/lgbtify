@@ -1,0 +1,23 @@
+.range:focus-visible::-webkit-slider-thumb {
+    @apply shadow-sm;
+}
+.range:focus-visible::-moz-range-thumb {
+    @apply shadow-sm;
+}
+.range::-webkit-slider-runnable-track {
+    @apply rounded-full h-2 w-full bg-light-900 dark:bg-dark-50;
+}
+.range::-moz-range-track {
+    @apply rounded-full h-2 w-full bg-light-900 dark:bg-dark-50;
+}
+.range::-webkit-slider-thumb {
+    background-color: #f67288;
+    @apply rounded-full w-5 h-5 relative border-none appearance-none;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.range::-moz-range-thumb {
+    background-color: #f67288;
+    @apply rounded-full w-5 h-5 relative border-none;
+    top: 50%;
+}

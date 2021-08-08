@@ -59,15 +59,12 @@ const draw = async () => {
 </script>
 
 <div class="flex flex-col items-center justify-center">
-    <label for="avatar-select" class="bg-white border rounded cursor-pointer flex flex-col border-gray-200 shadow my-5 mx-4 tracking-wide py-6 px-4 text-dark-100 w-56 items-center uppercase dark:bg-dark-200 dark:border-dark-50 dark:text-light-100 hover:bg-light-200 hover:text-dark-200 dark:hover:bg-dark-300 dark:hover:text-light-200 focus-within:outline-solid-gray-900 focus-within:dark:outline-solid-light-100">
-        <svg width="24" height="24" fill="none" viewBox="0 0 24 24">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.75 14.75V16.25C4.75 17.9069 6.09315 19.25 7.75 19.25H16.25C17.9069 19.25 19.25 17.9069 19.25 16.25V14.75"></path>
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 14.25L12 5"></path>
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8.75 8.25L12 4.75L15.25 8.25"></path>
+    <label class="bg-white border rounded cursor-pointer flex flex-col border-gray-200 shadow my-5 mx-4 tracking-wide py-6 px-4 text-dark-100 w-56 items-center uppercase dark:bg-dark-200 dark:border-dark-50 dark:text-light-100 hover:bg-light-200 hover:text-dark-200 dark:hover:bg-dark-300 dark:hover:text-light-200 focus-within:outline-solid-gray-900 focus-within:dark:outline-solid-light-100">
+        <svg width="24" height="24" fill="none">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.75 14.75v1.5a3 3 0 003 3h8.5a3 3 0 003-3v-1.5M12 14.25V5M8.75 8.25L12 4.75l3.25 3.5"/>
         </svg>
         <span class="mt-2 text-base leading-normal">Select a file</span>
         <input
-            id="avatar-select"
             class="h-px w-px opacity-0 select-none"
             type="file"
             accept="image/png, image/jpeg, image/svg+xml, image/webp"
@@ -85,10 +82,9 @@ const draw = async () => {
             </button>
         {/each}
         {#if avatar}
-            <label for="flag-select" class="bg-white border rounded cursor-pointer flex flex-col border-gray-200 h-24 shadow text-center tracking-wide text-dark-100 w-36 items-center justify-center uppercase dark:bg-dark-200 dark:border-dark-50 dark:text-light-100 hover:bg-light-200 dark:hover:bg-dark-300 hover:text-dark-200 dark:hover:text-light-200 focus-within:outline-solid-gray-900 focus-within:dark:outline-solid-light-100">
+            <label class="bg-white border rounded cursor-pointer flex flex-col border-gray-200 h-24 shadow text-center tracking-wide text-dark-100 w-36 items-center justify-center uppercase dark:bg-dark-200 dark:border-dark-50 dark:text-light-100 hover:bg-light-200 dark:hover:bg-dark-300 hover:text-dark-200 dark:hover:text-light-200 focus-within:outline-solid-gray-900 focus-within:dark:outline-solid-light-100">
                 <span class="text-base leading-normal">From gallery</span>
                 <input
-                    id="flag-select"
                     class="h-px w-px opacity-0 select-none"
                     type="file"
                     accept="image/png, image/jpeg, image/svg+xml, image/webp"
@@ -97,13 +93,15 @@ const draw = async () => {
              </label>
         {/if}
     </div>
-    <div class="flex flex-col items-center justify-center my-5 w-full lg:w-2/3">
-        <label class="flex flex-col items-center justify-center w-full">
-            <span>Flag opacity: {(opacity / 255).toFixed(2)}</span>
-            <input class="w-full" type="range" name="opacity" :value:opacity min="1" max="255">
-        </label>
-        <button @click:draw class="rounded-md font-medium bg-gray-900 shadow my-3 leading-snug py-2 px-4 text-gray-200 dark:focus:outline-solid-light-100 dark:bg-dark-100 hover:bg-gray-800 dark:hover:bg-dark-50">Apply</button>
-    </div>
+    {#if avatar}
+        <div class="flex flex-col items-center justify-center my-5 w-full lg:w-2/3">
+            <label class="flex flex-col items-center justify-center w-full">
+                <span>Flag opacity: {(opacity / 255).toFixed(2)}</span>
+                <input class="w-full appearance-none cursor-pointer my-2 h-2 bg-transparent rounded-full range" type="range" name="opacity" :value:opacity min="1" max="255">
+            </label>
+            <button @click:draw class="rounded-md font-medium bg-gray-900 shadow my-3 leading-snug py-2 px-4 text-gray-200 dark:focus:outline-solid-light-100 dark:bg-dark-100 hover:bg-gray-800 dark:hover:bg-dark-50">Apply</button>
+        </div>
+    {/if}
 </div>
 
 <div class="flex flex-col mt-16 pb-16 w-2/3 items-center justify-center md:w-96 lg:mt-0 lg:pb-0">

@@ -5,7 +5,6 @@ import { default as malinaPlugin } from 'malinajs/malina-rollup'
 import { default as windiCSSPlugin } from 'vite-plugin-windicss'
 
 export default defineConfig(({ mode }) => {
-
   const DEV = process.env.MODE === 'development'
 
   return {

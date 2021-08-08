@@ -2,58 +2,63 @@
 import { drawCanvas } from './lib/createImage'
 import { flags, flagAlts } from './lib/flags'
 
-const canvas = document.createElement('canvas');
+const canvas = document.createElement('canvas')
 
-let output = '', avatar = '', flag = '', avatarFileName = '', opacity = 153;
+let output = '',
+  avatar = '',
+  flag = '',
+  avatarFileName = '',
+  opacity = 153
 
-const readFile = (e, setAvatarFileName) => new Promise(resolve => {
+const readFile = (e, setAvatarFileName) =>
+  new Promise((resolve) => {
     const file = e.target.files[0]
 
-    if (!file) return;
+    if (!file) return
 
-    if(setAvatarFileName) avatarFileName = file.name.split('.').slice(0, -1).join('')
-    
-    const reader = new FileReader();
+    if (setAvatarFileName) avatarFileName = file.name.split('.').slice(0, -1).join('')
 
-    reader.addEventListener('load', e => resolve(e.target.result))
+    const reader = new FileReader()
 
-    return reader.readAsDataURL(file);
-});
+    reader.addEventListener('load', (e) => resolve(e.target.result))
+
+    return reader.readAsDataURL(file)
+  })
 
 const onAvatarUpload = async (event) => {
-    avatar = await readFile(event, true)
+  avatar = await readFile(event, true)
 
-    if(output !== '') URL.revokeObjectURL(output)
+  if (output !== '') URL.revokeObjectURL(output)
 
-    flag = 'data:image/svg+xml,' + flags[1]
+  flag = 'data:image/svg+xml,' + flags[1]
 
-    output = await drawCanvas(canvas, avatar, flag, opacity)
-};
+  output = await drawCanvas(canvas, avatar, flag, opacity)
+}
 
 const onFlagUpload = async (event) => {
-    flag = await readFile(event)
+  flag = await readFile(event)
 
-    if(output !== '') URL.revokeObjectURL(output)
+  if (output !== '') URL.revokeObjectURL(output)
 
-    output = await drawCanvas(canvas, avatar, flag, opacity)
+  output = await drawCanvas(canvas, avatar, flag, opacity)
 }
 
 const onFlagChange = async (newFlag) => {
-    if(avatar === '') return
+  if (avatar === '') return
 
-    flag = 'data:image/svg+xml,' + newFlag
+  flag = 'data:image/svg+xml,' + newFlag
 
-    if(output !== '') URL.revokeObjectURL(output)
+  if (output !== '') URL.revokeObjectURL(output)
 
-    output = await drawCanvas(canvas, avatar, flag, opacity)
+  output = await drawCanvas(canvas, avatar, flag, opacity)
 }
 
 const draw = async () => {
-    if(avatar === '' || flag === '') return
+  if (avatar === '' || flag === '') return
 
-    if(output !== '') URL.revokeObjectURL(output)
+  if (output !== '') URL.revokeObjectURL(output)
 
-    output = await drawCanvas(canvas, avatar, flag, opacity)
+  output = await drawCanvas(canvas, avatar, flag, opacity)
 };
 
 </script>
@@ -93,18 +98,18 @@ const draw = async () => {
              </label>
         {/if}
     </div>
-    {#if avatar}
-        <div class="flex flex-col items-center justify-center my-5 w-full lg:w-2/3">
+    <div class="flex flex-col items-center justify-center my-5 w-full lg:w-2/3 min-h-40">
+        {#if avatar}
             <label class="flex flex-col items-center justify-center w-full">
                 <span>Flag opacity: {(opacity / 255).toFixed(2)}</span>
                 <input class="w-full appearance-none cursor-pointer my-2 h-2 bg-transparent rounded-full range" type="range" name="opacity" :value:opacity min="1" max="255">
             </label>
             <button @click:draw class="rounded-md font-medium bg-gray-900 shadow my-3 leading-snug py-2 px-4 text-gray-200 dark:focus:outline-solid-light-100 dark:bg-dark-100 hover:bg-gray-800 dark:hover:bg-dark-50">Apply</button>
-        </div>
-    {/if}
+        {/if}
+    </div>
 </div>
 
-<div class="flex flex-col mt-16 pb-16 w-2/3 items-center justify-center md:w-96 lg:mt-0 lg:pb-0">
+<div class="flex flex-col mt-4 pb-16 w-2/3 items-center justify-center md:w-96 lg:mt-0 lg:pb-0">
     {#if output}
         <img src={output} alt="Avatar with an overlay picture">
         <a class="rounded-md font-medium bg-gray-900 shadow my-3 leading-snug py-2 px-4 text-gray-200 dark:focus:outline-solid-light-100 dark:bg-dark-100 hover:bg-gray-800 dark:hover:bg-dark-50" href={output} download="{avatarFileName}-{output.split('/')[3] || ''}.png">Download</a>

@@ -9,13 +9,14 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "vite": "^2.4.4",
-    "vite-plugin-html": "^2.0.7",
+    "malinajs-unplugin": "^0.0.3",
+    "vite": "^2.5.10",
+    "vite-plugin-html": "^2.1.0",
     "vite-plugin-singlefile": "^0.5.1",
-    "vite-plugin-windicss": "^1.2.7"
+    "vite-plugin-windicss": "^1.4.4"
   },
   "dependencies": {
-    "malinajs": "^0.6.41",
-    "windicss": "^3.1.6"
+    "malinajs": "^0.6.43",
+    "windicss": "^3.1.7"
   }
 }

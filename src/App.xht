@@ -59,7 +59,11 @@ const draw = async () => {
   if (output !== '') URL.revokeObjectURL(output)
 
   output = await drawCanvas(canvas, avatar, flag, opacity)
-};
+}
+
+function onMount(){
+  document.getElementById('app').classList.remove('hidden')
+}
 
 </script>
 
@@ -112,6 +116,6 @@ const draw = async () => {
 <div class="flex flex-col mt-4 pb-16 w-2/3 items-center justify-center md:w-96 lg:mt-0 lg:pb-0">
     {#if output}
         <img src={output} alt="Avatar with an overlay picture">
-        <a class="rounded-md font-medium bg-gray-900 shadow my-3 leading-snug py-2 px-4 text-gray-200 dark:focus:outline-solid-light-100 dark:bg-dark-100 hover:bg-gray-800 dark:hover:bg-dark-50" href={output} download="{avatarFileName}-{output.split('/')[3] || ''}.png">Download</a>
+        <a class="rounded-md font-medium bg-gray-900 shadow my-3 leading-snug py-2 px-4 text-gray-200 dark:focus:outline-solid-light-100 dark:bg-dark-100 hover:bg-gray-800 dark:hover:bg-dark-50" href={output} download="{avatarFileName}.png">Download</a>
     {/if}
 </div>

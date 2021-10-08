@@ -10,7 +10,8 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [
       malinaPlugin({
-        displayLabel: DEV,
+        debugLabel: false,
+        hideLabel: true
       }),
       windiCSSPlugin({
         scan: {

@@ -6,4 +6,4 @@ export const flags = [
   `%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='480' %3E%3Cpath fill='%235bcefa' d='M0 0h800v480H0z'/%3E%3Cpath fill='%23f5a9b8' d='M0 96h800v288H0z'/%3E%3Cpath fill='%23fff' d='M0 192h800v96H0z'/%3E%3C/svg%3E`,
 ]
 
-export const flagAlts = ['lesbian', 'gay', 'bi', 'pan', 'trans']
+export const flagAlts = ['lesbian', 'gay', 'bisexual', 'pansexual', 'transsexual']

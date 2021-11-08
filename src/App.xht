@@ -86,8 +86,9 @@ function onMount(){
             <button 
                 class="rounded h-24 shadow max-w-36 filter focus:outline-solid-gray-900 dark:focus:outline-solid-light-100 hover:brightness-95 focus:brightness-90" 
                 @click={async () => await onFlagChange(flag)}
+                aria-label="Select {flagAlts[i]} flag"
             >
-                <img class="rounded object-cover h-24 max-w-36" src="data:image/svg+xml,{flag}" alt="{flagAlts[i]} flag">
+                <img class="rounded object-cover h-24 max-w-36" src="data:image/svg+xml,{flag}" alt="{flagAlts[i]} flag" aria-hidden="true">
             </button>
         {/each}
         {#if avatar}
@@ -105,8 +106,8 @@ function onMount(){
     <div class="flex flex-col items-center justify-center my-5 w-full lg:w-2/3 min-h-40">
         {#if avatar}
             <label class="flex flex-col items-center justify-center w-full">
-                <span>Flag opacity: <span translate="no">{(opacity / 255).toFixed(2)}</span></span>
-                <input class="w-full appearance-none cursor-pointer my-2 h-2 bg-transparent rounded-full range" type="range" name="opacity" :value:opacity min="1" max="255">
+                <span>Flag opacity: <span translate="no">{opacity}{' '}</span>out of 255</span>
+                <input class="w-full appearance-none cursor-pointer my-2 h-2 bg-transparent rounded-full range" type="range" name="opacity" :value:opacity min="1" max="255" step="1">
             </label>
             <button @click:draw class="rounded-md font-medium bg-gray-900 shadow my-3 leading-snug py-2 px-4 text-gray-200 dark:focus:outline-solid-light-100 dark:bg-dark-100 hover:bg-gray-800 dark:hover:bg-dark-50">Apply</button>
         {/if}

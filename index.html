@@ -5,39 +5,79 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>LGBTify your profile picture</title>
     <meta name="description" content="LGBTify your profile picture" />
-    <link rel="manifest" href="/site.webmanifest">
-    <meta name="keywords" content="ЛГБТ, LGBT, Photo, Avatar, Image, Generator" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="theme-color" content="#ffffff">
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta
+      name="keywords"
+      content="ЛГБТ, LGBT, Photo, Avatar, Image, Generator"
+    />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <meta name="msapplication-TileColor" content="#ffffff" />
+    <meta name="theme-color" content="#ffffff" />
   </head>
-  <body class="bg-white flex flex-col font-sans min-h-screen tracking-tight text-gray-900 antialiased dark:bg-dark-400 dark:text-light-50">
+  <body
+    class="bg-white flex flex-col font-sans min-h-screen tracking-tight text-gray-900 antialiased dark:bg-dark-400 dark:text-light-50"
+  >
     <header class="w-full">
-      <div class="flex mx-auto h-16 max-w-6xl px-5 items-center justify-between sm:px-6 md:h-20">
-          <a class="flex justify-between items-center dark:focus:outline-solid-light-100" href="/">
-            <svg width="36" height="36" viewBox="0 0 128 128" aria-hidden="true">
-              <style>.G{clip-path:url(#B)}</style>
-              <defs>
-                <circle id="A" cx="64" cy="64" r="64"/>
-              </defs>
-              <clipPath id="B">
-                <use xlink:href="#A"/>
-              </clipPath>
-              <path d="M0 .1h128V128H0V.1z" fill="#750787" class="G"/>
-              <path d="M0 .1h128v106.6H0V.1z" fill="#004dff" class="G"/>
-              <path d="M0 .1h128v85.2H0V.1z" fill="#008026" class="G"/>
-              <path d="M0 .1h128V64H0V.1z" fill="#ffed00" class="G"/>
-              <path d="M0 .1h128v42.6H0V.1z" fill="#ff8c00" class="G"/>
-              <path d="M0 .1h128v21.3H0V.1z" fill="#e40303" class="G"/>
-            </svg>
-            <h1 class="font-normal mx-4 text-lg" translate="no">LGBTify</h1>
-          </a>
-          <a translate="no" class="rounded-md font-medium bg-gray-900 shadow leading-snug py-2 px-4 text-gray-200 dark:bg-dark-100 hover:bg-gray-800 dark:hover:bg-dark-50 dark:focus:outline-solid-light-100" rel="noopener noreferrer" href="https://github.com/Artemis69/lgbtify" target="_blank">GitHub</a>
+      <div
+        class="flex mx-auto h-16 max-w-6xl px-5 items-center justify-between sm:px-6 md:h-20"
+      >
+        <a
+          class="flex justify-between items-center dark:focus:outline-solid-light-100"
+          href="/"
+        >
+          <svg width="36" height="36" viewBox="0 0 128 128" aria-hidden="true">
+            <clipPath id="B">
+              <circle cx="64" cy="64" r="64" />
+            </clipPath>
+            <path
+              d="M0 .1h128V128H0V.1z"
+              fill="#750787"
+              style="clip-path: url(#B)"
+            />
+            <path
+              d="M0 .1h128v106.6H0V.1z"
+              fill="#004dff"
+              style="clip-path: url(#B)"
+            />
+            <path
+              d="M0 .1h128v85.2H0V.1z"
+              fill="#008026"
+              style="clip-path: url(#B)"
+            />
+            <path
+              d="M0 .1h128V64H0V.1z"
+              fill="#ffed00"
+              style="clip-path: url(#B)"
+            />
+            <path
+              d="M0 .1h128v42.6H0V.1z"
+              fill="#ff8c00"
+              style="clip-path: url(#B)"
+            />
+            <path
+              d="M0 .1h128v21.3H0V.1z"
+              fill="#e40303"
+              style="clip-path: url(#B)"
+            />
+          </svg>
+          <h1 class="font-normal mx-4 text-lg" translate="no">LGBTify</h1>
+        </a>
+        <a
+          translate="no"
+          class="rounded-md font-medium bg-gray-900 shadow leading-snug py-2 px-4 text-gray-200 dark:bg-dark-100 hover:bg-gray-800 dark:hover:bg-dark-50 dark:focus:outline-solid-light-100"
+          rel="noopener noreferrer"
+          href="https://github.com/Artemis69/lgbtify"
+          target="_blank"
+          >GitHub</a
+        >
       </div>
     </header>
-    <div class="flex flex-col flex-grow h-full w-full lg:flex-row items-center justify-center md:justify-around hidden" id="app"></div>
-    <script type="module" src="/src/main.js"></script>
+    <div
+      class="flex flex-col flex-grow h-full w-full lg:flex-row items-center justify-center md:justify-around"
+      id="app"
+    ></div>
+    <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

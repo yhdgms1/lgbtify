@@ -1,122 +1,123 @@
 <script>
-import { drawCanvas } from './lib/createImage'
-import { flags, flagAlts } from './lib/flags'
+  import { flags, process, readFile } from "./lib";
 
-const canvas = document.createElement('canvas')
+  let avatar = "";
+  let opacity = 153;
+  let flag = flags[0];
+  let output = "";
 
-let output = '',
-  avatar = '',
-  flag = '',
-  avatarFileName = '',
-  opacity = 153
+  const draw = () => {
+    if (!avatar) return;
 
-const readFile = (e, setAvatarFileName) =>
-  new Promise((resolve) => {
-    const file = e.target.files[0]
+    process({ file: avatar, opacity, flag }).then((result) => {
+      result !== null && (output = result);
+    });
+  };
 
-    if (!file) return
+  const readAvatar = (e) => {
+    readFile(e)
+      .then((result) => result !== null && (avatar = result))
+      .then(draw);
+  };
 
-    if (setAvatarFileName) avatarFileName = file.name.split('.').slice(0, -1).join('')
+  const changeFlag = (_flag) => {
+    flag = _flag;
+    draw();
+  };
 
-    const reader = new FileReader()
+  const readFlag = (e) => {
+    readFile(e).then((result) => result !== null && changeFlag(result));
+  };
 
-    reader.addEventListener('load', (e) => resolve(e.target.result))
-
-    return reader.readAsDataURL(file)
-  })
-
-const onAvatarUpload = async (event) => {
-  avatar = await readFile(event, true)
-
-  if (output !== '') URL.revokeObjectURL(output)
-
-  flag = 'data:image/svg+xml,' + flags[1]
-
-  output = await drawCanvas(canvas, avatar, flag, opacity)
-}
-
-const onFlagUpload = async (event) => {
-  flag = await readFile(event)
-
-  if (output !== '') URL.revokeObjectURL(output)
-
-  output = await drawCanvas(canvas, avatar, flag, opacity)
-}
-
-const onFlagChange = async (newFlag) => {
-  if (avatar === '') return
-
-  flag = 'data:image/svg+xml,' + newFlag
-
-  if (output !== '') URL.revokeObjectURL(output)
-
-  output = await drawCanvas(canvas, avatar, flag, opacity)
-}
-
-const draw = async () => {
-  if (avatar === '' || flag === '') return
-
-  if (output !== '') URL.revokeObjectURL(output)
-
-  output = await drawCanvas(canvas, avatar, flag, opacity)
-}
-
-function onMount(){
-  document.getElementById('app').classList.remove('hidden')
-}
-
+  const random = (arg) => (Math.random() * Math.random()).toString(36).slice(2);
 </script>
 
 <div class="flex flex-col items-center justify-center">
-    <label class="bg-white border rounded cursor-pointer flex flex-col border-gray-200 shadow my-5 mx-4 tracking-wide py-6 px-4 text-dark-100 w-56 items-center uppercase dark:bg-dark-200 dark:border-dark-50 dark:text-light-100 hover:bg-light-200 hover:text-dark-200 dark:hover:bg-dark-300 dark:hover:text-light-200 focus-within:outline-solid-gray-900 focus-within:dark:outline-solid-light-100">
-        <svg width="24" height="24" fill="none">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.75 14.75v1.5a3 3 0 003 3h8.5a3 3 0 003-3v-1.5M12 14.25V5M8.75 8.25L12 4.75l3.25 3.5"/>
-        </svg>
-        <span class="mt-2 text-base leading-normal">Select a file</span>
-        <input
-            class="h-px w-px opacity-0 select-none"
-            type="file"
-            accept="image/png, image/jpeg, image/svg+xml, image/webp"
-            @change:onAvatarUpload
-        />
+  <label
+    class="bg-white border rounded cursor-pointer flex flex-col border-gray-200 shadow my-5 mx-4 tracking-wide py-6 px-4 text-dark-100 w-56 items-center uppercase dark:bg-dark-200 dark:border-dark-50 dark:text-light-100 hover:bg-light-200 hover:text-dark-200 dark:hover:bg-dark-300 dark:hover:text-light-200 focus-within:outline-solid-gray-900 focus-within:dark:outline-solid-light-100"
+  >
+    <svg width="24" height="24" fill="none">
+      <path
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="1.5"
+        d="M4.75 14.75v1.5a3 3 0 003 3h8.5a3 3 0 003-3v-1.5M12 14.25V5M8.75 8.25L12 4.75l3.25 3.5"
+      />
+    </svg>
+    <span class="mt-2 text-base leading-normal">Select a file</span>
+    <input
+      class="h-px w-px opacity-0 select-none"
+      type="file"
+      accept="image/png, image/jpeg, image/svg+xml, image/webp"
+      @change:readAvatar
+    />
+  </label>
+  <p class="text-lg py-4 px-2">Select a flag:</p>
+  <div class="grid gap-2 grid-cols-2 xl:grid-cols-6 xl:grid-rows-1">
+    {#each flags as flag, i}
+    <button
+      class="rounded h-24 shadow max-w-36 filter focus:outline-solid-gray-900 dark:focus:outline-solid-light-100 hover:brightness-95 focus:brightness-90"
+      @click="{changeFlag(flag)}"
+      aria-label="Select flag"
+    >
+      <img
+        class="rounded object-cover h-24 max-w-36"
+        src="{flag}"
+        aria-hidden="true"
+      />
+    </button>
+    {/each}
+    {#if avatar}
+    <label
+      class="bg-white border rounded cursor-pointer flex flex-col border-gray-200 h-24 shadow text-center tracking-wide text-dark-100 w-36 items-center justify-center uppercase dark:bg-dark-200 dark:border-dark-50 dark:text-light-100 hover:bg-light-200 dark:hover:bg-dark-300 hover:text-dark-200 dark:hover:text-light-200 focus-within:outline-solid-gray-900 focus-within:dark:outline-solid-light-100"
+    >
+      <span class="text-base leading-normal">From gallery</span>
+      <input
+        class="h-px w-px opacity-0 select-none"
+        type="file"
+        accept="image/png, image/jpeg, image/svg+xml, image/webp"
+        @change:readFlag
+      />
     </label>
-    <p class="text-lg py-4 px-2">Select a flag:</p>
-    <div class="grid gap-2 grid-cols-2 xl:grid-cols-6 xl:grid-rows-1">
-        {#each flags as flag, i}
-            <button 
-                class="rounded h-24 shadow max-w-36 filter focus:outline-solid-gray-900 dark:focus:outline-solid-light-100 hover:brightness-95 focus:brightness-90" 
-                @click={async () => await onFlagChange(flag)}
-                aria-label="Select {flagAlts[i]} flag"
-            >
-                <img class="rounded object-cover h-24 max-w-36" src="data:image/svg+xml,{flag}" alt="{flagAlts[i]} flag" aria-hidden="true">
-            </button>
-        {/each}
-        {#if avatar}
-            <label class="bg-white border rounded cursor-pointer flex flex-col border-gray-200 h-24 shadow text-center tracking-wide text-dark-100 w-36 items-center justify-center uppercase dark:bg-dark-200 dark:border-dark-50 dark:text-light-100 hover:bg-light-200 dark:hover:bg-dark-300 hover:text-dark-200 dark:hover:text-light-200 focus-within:outline-solid-gray-900 focus-within:dark:outline-solid-light-100">
-                <span class="text-base leading-normal">From gallery</span>
-                <input
-                    class="h-px w-px opacity-0 select-none"
-                    type="file"
-                    accept="image/png, image/jpeg, image/svg+xml, image/webp"
-                    @change:onFlagUpload
-                />
-             </label>
-        {/if}
-    </div>
-    <div class="flex flex-col items-center justify-center my-5 w-full lg:w-2/3 min-h-40">
-        {#if avatar}
-            <label class="flex flex-col items-center justify-center w-full">
-                <span>Flag opacity: <span translate="no">{opacity}{' '}</span>out of 255</span>
-                <input class="w-full appearance-none cursor-pointer my-2 h-2 bg-transparent rounded-full range" type="range" name="opacity" :value:opacity min="1" max="255" step="1">
-            </label>
-            <button @click:draw class="rounded-md font-medium bg-gray-900 shadow my-3 leading-snug py-2 px-4 text-gray-200 dark:focus:outline-solid-light-100 dark:bg-dark-100 hover:bg-gray-800 dark:hover:bg-dark-50">Apply</button>
-        {/if}
-    </div>
+    {/if}
+  </div>
+  <div
+    class="flex flex-col items-center justify-center my-5 w-full lg:w-2/3 min-h-40"
+  >
+    {#if avatar}
+    <label class="flex flex-col items-center justify-center w-full">
+      <span class="tabular-nums lining-nums">Flag opacity: <span translate="no">{opacity}{' '}</span>out of 255</span>
+      <input
+        class="w-full appearance-none cursor-pointer my-2 h-2 bg-transparent rounded-full range"
+        type="range"
+        name="opacity"
+        :value:opacity
+        min="1"
+        max="254"
+        step="1"
+      />
+    </label>
+    <button
+      @click:draw
+      class="rounded-md font-medium bg-gray-900 shadow my-3 leading-snug py-2 px-4 text-gray-200 dark:focus:outline-solid-light-100 dark:bg-dark-100 hover:bg-gray-800 dark:hover:bg-dark-50"
+    >
+      Apply
+    </button>
+    {/if}
+  </div>
 </div>
 
-<div class="flex flex-col mt-4 pb-16 w-2/3 items-center justify-center md:w-96 lg:mt-0 lg:pb-0">
-    {#if output}
-        <img src={output} alt="Avatar with an overlay picture">
-        <a class="rounded-md font-medium bg-gray-900 shadow my-3 leading-snug py-2 px-4 text-gray-200 dark:focus:outline-solid-light-100 dark:bg-dark-100 hover:bg-gray-800 dark:hover:bg-dark-50" href={output} download="{avatarFileName}.png">Download</a>
-    {/if}
+<div
+  class="flex flex-col mt-4 pb-16 w-2/3 items-center justify-center md:w-96 lg:mt-0 lg:pb-0"
+>
+  {#if output}
+    <img src="{output}" alt="Avatar with an overlay picture" />
+    <a
+      class="rounded-md font-medium bg-gray-900 shadow my-3 leading-snug py-2 px-4 text-gray-200 dark:focus:outline-solid-light-100 dark:bg-dark-100 hover:bg-gray-800 dark:hover:bg-dark-50"
+      href="{output}"
+      download="{random(output)}.png"
+      >Download</a
+    >
+  {/if}
 </div>

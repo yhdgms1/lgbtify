@@ -1,7 +1,8 @@
 import App from "./App.xht";
+import { mount } from 'malinajs/runtime'
+
 import "windi.css";
 
-const target = document.getElementById("app");
-const app = App();
+const target = document.getElementById("app")!;
 
-target && target.appendChild(app.$dom);
+mount(target, App);
